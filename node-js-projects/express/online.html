@@ -1,0 +1,209 @@
+<!--
+                                      _  _
+                            _____*~~~  **  ~~~*_____
+                         __* ___     |\__/|     ___ *__
+                       _*  / 888~~\__(8OO8)__/~~888 \  *_
+                     _*   /88888888888888888888888888\   *_
+                     *   |8888888888888888888888888888|   *
+                    /~*  \8888/~\88/~\8888/~\88/~\8888/  *~
+                   /  ~*  \88/   \/   (88)   \/   \88/  *~
+                  /    ~*  \/          \/          \/  *~
+                 /       ~~*_                      _*~~/
+                /            ~~~~~*___ ** ___*~~~~~  /
+               /                      ~  ~         /
+              /                                  /
+             /                                 /
+            /                                /
+           /                    t__n__r__  /
+          /                    | ####### |
+         /            ___      | ####### |             ____i__           /
+        /  _____p_____l_l____  | ####### |            | ooooo |         qp
+i__p__ /  |  ##############  | | ####### |__l___xp____| ooooo |      |~~~~|
+ oooo |_I_|  ##############  | | ####### |oo%Xoox%ooxo| ooooo |p__h__|##%#|
+ oooo |ooo|  ##############  | | ####### |o%xo%%xoooo%| ooooo |      |#xx%|
+ oooo |ooo|  ##############  | | ####### |o%ooxx%ooo%%| ooooo |######|x##%|
+ oooo |ooo|  ##############  | | ####### |oo%%x%oo%xoo| ooooo |######|##%x|
+ oooo |ooo|  ##############  | | ####### |%x%%oo%/oo%o| ooooo |######|/#%x|
+ oooo |ooo|  ##############  | | ####### |%%x/oo/xx%xo| ooooo |######|#%x/|
+ oooo |ooo|  ##############  | | ####### |xxooo%%/xo%o| ooooo |######|#^x#|
+ oooo |ooo|  ##############  | | ####### |oox%%o/x%%ox| ooooo |~~~$~~|x##/|
+ oooo |ooo|  ##############  | | ####### |x%oo%x/o%//x| ooooo |_KKKK_|#x/%|
+ ooo~\|ooo|~\##############  | ~\####### |oox%xo%%oox%~\ooooo |_|~|~\|xx%/|
+ ooo ||oHo| |####AAAA######  |h||##XX### |x%x%WWx%%/ox||ooDoo |_| |Y||xGGx|
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  | ~~~~~~~
+-->
+<meta charset="utf-8">
+<script>
+    var json_data = {{{data}}}
+</script>
+<!-- Styles -->
+<style>
+    body { background-color: #30303d; color: #fff; }
+    #chartdiv {width:100%; height:70%;}
+    a:link {color:#30303d;text-decoration: none;}
+    a:visited {color: inherit;}
+    a:hover {color: hotpink;}
+    a:active {color: hotpink;}												
+</style>
+    
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/dark.js"></script>
+
+<!-- Chart code -->
+
+<script>
+var g_players = []
+var chartData = []
+
+var ver = {{{version}}}
+
+if(ver==2)
+{
+    for (var Elem in json_data)
+    {
+        var time = json_data[Elem].time
+        var players = json_data[Elem].players
+
+        var date = new Date();
+        date.setTime(time*1000)
+        var temp_data = date
+
+        g_players[Elem] = players
+        chartData.push({
+                date: temp_data,
+                players_num: players.length,
+        });
+    }
+}
+else if (ver==1)
+{
+    for (var Elem in json_data)
+    {
+        var time = json_data[Elem].t
+        var date = new Date();
+        date.setTime(time*1000)
+
+        if (json_data[Elem].first_init)
+        {
+            g_players[Elem] = []
+        }
+        else
+        {
+
+            var name = json_data[Elem].n,
+                cid = json_data[Elem].c,
+                disconnect = json_data[Elem].d
+
+            if(Elem==0)
+            {
+                if(disconnect) g_players[Elem] = []
+                else g_players[Elem] = [{cid: cid,name:name}]
+            }
+            else
+            {
+                g_players[Elem] = g_players[Elem-1].slice()
+
+                if (disconnect)
+                {
+                    g_players[Elem].forEach(function(item,pos) {
+                        if(item.cid==cid)g_players[Elem].splice(pos, 1)
+                    }); 
+                }
+                else
+                {
+                    g_players[Elem].push({cid: cid,name:name})
+                }   
+            }
+        }//first_init
+
+        chartData.push({
+                date: date,
+                players_num: g_players[Elem].length,
+        });
+    }
+}
+
+
+
+AmCharts.monthNames = ['Января','Февраля','Марта','Апреля','Мая','Июня','Июля','Августа','Хуйтября','Октября','Ноября','Декабря'];
+var chart = AmCharts.makeChart("chartdiv", {
+    "type": "serial",
+    "theme": "dark",
+    "hideCredits":true,
+    "marginRight": 25,
+    "autoMarginOffset": 5,
+    "marginTop": 0,
+    "dataDateFormat": "JJ:NN:SS",
+    "dataProvider": chartData,
+    "valueAxes": [{
+        "axisAlpha": 0.3,
+        "dashLength": 1,
+        "minimum": 0,
+        "maximum": 15,
+        "position": "left"
+    }],
+    "mouseWheelZoomEnabled": true,
+    "graphs": [{
+        "id": "g1",
+        balloonFunction: function(graphDataItem, graph) {
+            var id = graphDataItem.index;
+            var ret = "Online: "+graphDataItem.values.value+"<hr>"
+            for (var i in g_players[id]) {
+                var row = g_players[id][i]
+                var weird_bool = id>0 ? g_players[id-1].some(function(el){return el.cid == row.cid}) : true
+                ret+="<a href=https://steamcommunity.com/profiles/"+row.cid+" target='_blank'>" + ( (weird_bool==false ? "<font size=2 face='consolas' color=#3CB371>":"<font size=3 face='consolas'>") + row.name + "</font><br>") + "</a>"
+            }
+            return ret  
+        },
+        "bullet": "round",
+        "bulletBorderAlpha": 0.1,
+        "bulletColor": "#FFFFFF",
+        "hideBulletsCount": 50,
+        "title": "wirebuild",
+        "valueField": "players_num",
+        "useLineColorForBulletBorder": true,
+        "balloon":{
+            "drop":false,
+            "hideBalloonTime": 1000,
+            "disableMouseEvents": false,
+            "fixedPosition": true
+        },
+    }],
+    "chartScrollbar": {
+        "autoGridCount": true,
+        "graph": "g1",
+        "scrollbarHeight": 40
+    },
+    "chartCursor": {
+       "limitToGraph":"g1",
+       //"categoryBalloonEnabled": false,
+       "categoryBalloonDateFormat": "JJ:NN:SS, DD MMMM",
+       "balloonPointerOrientation": "vertical",
+       "zoomable": true
+    },
+    "categoryField": "date",
+    "categoryAxis": {
+        "equalSpacing": false,
+        "parseDates": true,
+        "minPeriod": "ss",
+        "axisColor": "#DADADA",
+        "dashLength": 1,
+        "minorGridEnabled": true
+    },
+    "export": {
+        "enabled": false,
+    }
+});
+chart.addListener("rendered", zoomChart);
+zoomChart();
+function zoomChart() {
+    chart.zoomToIndexes(chartData.length - 40, chartData.length - 1);
+}
+</script>
+
+<!-- HTML -->
+<div id="chartdiv"></div>	

@@ -1,0 +1,51 @@
+.user {
+    position: relative;
+    width: 50%;
+    left: 25%;
+	margin-top: 15px;
+    margin-bottom: 20px;
+	text-align: right;
+	padding-right: 80px;
+}
+
+.form-control[readonly] {
+	background-color: white !important;
+}
+
+.avatar {
+	position: absolute;
+    width: 64px;
+    height: 64px;
+	right: 5px;
+}
+
+th{
+    font-weight: normal;
+}
+
+.panel2 {
+	position: absolute;
+	right: 100px;
+}
+
+
+.content-nav {
+	position: absolute;
+	width: 50%;
+	left: 25%;
+	top: 59px;
+}
+
+.content {
+    background-color: white;
+	margin-top: 40px;
+}
+
+
+body {
+    background-image: url("https://static.tumblr.com/b9a6c2813dd5b9bb759fdddc9a5b6789/ndwzcep/WZ1osie7e/tumblr_static_17smq03kcr8gkwccwgkgc04sk_2048_v2.jpg");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+}
+

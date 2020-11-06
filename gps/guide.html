@@ -1,0 +1,79 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Гайд по карте</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
+        <style>
+            body {margin-left: 20px; font-size: 20px;}
+        </style>
+        <script>
+            function ready()
+            {
+                tel = document.getElementById('tel');
+                clipboard = document.getElementById('clipboardto');
+                
+                tel.addEventListener('input', p);
+                function p()
+                {
+                    clipboard.value = "http://partum-logistic.ru/gps/getcoord.php?lat=%LAT&lon=%LON&speed=%SPD&battery=%BATT&acc=%ACC&dir=%DIR&update=%TIME&phone="+tel.value
+                }
+                document.getElementById('copy').onclick = function()
+                {
+                    if (tel.value.length==11)
+                    {
+                        clipboard.select();
+                        clipboard.setSelectionRange(0, 99999); 
+                        document.execCommand("copy");
+                        alert("Скопировано успешно.")
+                    }else alert("Неверно введен телефон.")
+                }
+            }
+            document.addEventListener("DOMContentLoaded", ready);
+        </script>
+    </head>
+
+
+
+    <body>
+        
+        Android:<a href="https://play.google.com/store/apps/details?id=com.mendhak.gpslogger">Play Market</a> <br>
+        iOS: <a href="https://apps.apple.com/us/app/overland-gps-tracker/id1292426766">AppStore</a><br>
+        <br>
+        <br>
+        <a href="./guide-iphone.html"><h2><u>--> iOS инструкция <--</u></h2></a>
+        <h1>Android</h1>
+
+        Введите ваш телефон, по которому вы зарегистрированы на сайте в формате 7XXXXXXXXXX (11 цифр): <br>
+        <input type="tel" id="tel" pattern="[0-9]{11}" placeholder="7XXXXXXXXXX"><br>
+        <b>Скопируйте ссылку, она понадобится вам при настройке приложения:</b><br>
+        <input type="text" value="http://partum-logistic.ru/gps/getcoord.php?lat=%LAT&lon=%LON&speed=%SPD&battery=%BATT&acc=%ACC&dir=%DIR&update=%TIME&phone=" id="clipboardto" readonly>
+        <button id='copy'>Копировать</button><br>
+        <ol>
+            <li><a href="https://play.google.com/store/apps/details?id=com.mendhak.gpslogger">Качаем приложение для Android.</a></li>
+            <li>Запускаем приложение в первый раз</li>
+            <li>Даем все права этому приложению если попросит (жмем 'Разрешить')</li>
+            <li>Жмем три полосы сверxу слева</br><img src="./images/1.png" height="50%"/></br></li>
+            <li>Открываем основные настройки</br><img src="./images/2.png" height="50%"/></li>
+            <li>Включаем первые две галочки и жмем 'необходимые разрешения', и везде нажимаем 'Разрешить' (если ничего не происxодит, все ок)</br><img src="./images/3.png" height="50%"/></li>
+            <li>Идем назад, открываем 'Настройки записи лога'<br><img src="./images/4.png" height="50%"/></li>
+            <li>Жмем 'Сохранять журналы по указанному пользователем URL-адресу'<br><img src="./images/5.png" height="50%"/></li>
+            <li>Открываем первый пункт и вводим туда ссылку, полученую сверxу<br><img src="./images/6.png" height="50%"/></li>
+            <li>Идем назад, открываем 'Настройки производительности'<br><img src="./images/7.png" height="50%"/></li>
+            <li>Включаем первые три пункта, листаем ниже, ставим 'Точность фильтрации' на 100<br><img src="./images/8.png" height="50%"/></li>
+            <li>Жмем "НАЧАТЬ ЗАПИСЬ"<br><img src="https://sun9-12.userapi.com/c205824/v205824151/9c4/cvYfJ3kyRAA.jpg" height="50%"/></li>
+            <li>так-же необходимо разрешить приложению работу в фоне и автозапуск<br>
+                это делается в настройках самого устройства<br>
+                <b>Huawei:</b> Заходим в настройки смартфона (шестеренка вверху справа в шторке) в меню Настройки / Батарея / Запуск приложений.<br>
+                Изначально вы увидите там активный переключатель “Управлять всем автоматически”.<br>
+                Найдите GPS logger и кликните на него. Внизу появится окошко с тремя переключателями,<br>
+                Выставляем все переключатели на 'Включено'<br>
+                <img src="https://i.imgur.com/ADM7iQd.png" height="70%"/><br>
+                <b>Xiaomi: </b>заходим в меню настроек, "Дополнительно" / "Батарея и производительность" / "Расход заряда батареи приложениями".<br>
+                И здесь мы видим раздел "Режимы экономии энергии". По умолчанию тут активирован режим "Стандартный", Ставим 'Отключено'<br>
+                <img src="https://root-nation.com/wp-content/uploads/2016/05/MIUI-notification-screen2-1.png" height="50%"/><br>
+                </li>
+        </ol>
+    </body>
+
+
+</html>
